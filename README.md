@@ -19,4 +19,4 @@ Application code and solution files are not yet created.
 | `tool-specific/cursor-workflow/` | Cursor workflow artifacts (context, spec, tasks) |
 | `ai-prompts/` | Reusable AI prompts |
 | `database/` | Database scripts and schema |
-| `cursor/rules/` | Cursor IDE rules |
+| `.cursor/rules/` | Cursor IDE rules |
