@@ -53,6 +53,7 @@ Thumbs.db
 # User secrets
 secrets.json
 **/appsettings.*.local.json
+.env
 
 # Publish output
 publish/

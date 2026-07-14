@@ -46,6 +46,8 @@ docs/
    dotnet build
    ```
 
+No additional configuration or secrets are required. The SQLite connection string in `appsettings.json` points to a local file under `database/`.
+
 ## Run
 
 From the repository root:
@@ -54,7 +56,15 @@ From the repository root:
 dotnet run --project src/SupportTicketManagement.Web
 ```
 
-The web application listens on the URLs configured in `src/SupportTicketManagement.Web/Properties/launchSettings.json`.
+The web application listens on the URLs configured in `src/SupportTicketManagement.Web/Properties/launchSettings.json`:
+
+| Profile | URL |
+|---------|-----|
+| http (default) | `http://localhost:5030` |
+| https | `https://localhost:7199` |
+| IIS Express | `http://localhost:6040` |
+
+Open `/Tickets` in a browser for the ticket list UI.
 
 ## Database
 
@@ -74,6 +84,14 @@ Mirrored SQL script: `database/schema-or-migrations/InitialCreate.sql`
 ```bash
 dotnet test
 ```
+
+Integration tests cover the mandatory assessment tier:
+
+- Valid and invalid ticket status transitions (state machine)
+- Backend validation (400/404 responses)
+- Search and filter on the list endpoint
+
+Results: [tool-specific/cursor-workflow/test-results.md](tool-specific/cursor-workflow/test-results.md)
 
 ## Repository Layout
 
@@ -100,6 +118,8 @@ Use-case services are registered via `AddApplication()` and delegate to reposito
 | `IUserService` | List seeded users |
 
 Repository implementations live in Infrastructure and are registered via `AddInfrastructure()`.
+
+Status transitions are enforced in the Application layer via `TicketStatusStateMachine` (Domain). Invalid transitions return HTTP 409 (API) or a user-visible error (MVC).
 
 ## MVC UI
 
@@ -132,3 +152,19 @@ Base URL when running locally: `http://localhost:5030` (see `launchSettings.json
 Enum values in JSON: `Low`, `Medium`, `High` (priority); `Open`, `InProgress`, `Resolved`, `Closed`, `Cancelled` (status).
 
 Error responses use the `ErrorResponse` shape (`title`, `status`, `errors[]`). Status codes: 400 validation, 404 not found, 409 invalid status transition, 500 unhandled error (no stack traces).
+
+## Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [docs/requirements-analysis.md](docs/requirements-analysis.md) | Functional and non-functional requirements |
+| [docs/acceptance-criteria.md](docs/acceptance-criteria.md) | Pass/fail criteria for Core features |
+| [docs/architecture.md](docs/architecture.md) | Layering and project structure |
+| [docs/api-contract.md](docs/api-contract.md) | REST API contract |
+| [docs/ui-flow.md](docs/ui-flow.md) | MVC screen flows |
+| [docs/test-strategy.md](docs/test-strategy.md) | Integration test approach |
+| [tool-specific/cursor-workflow/project-context.md](tool-specific/cursor-workflow/project-context.md) | Persistent project context |
+
+## Security
+
+No credentials or API keys are stored in source control. Local SQLite paths only. User secrets and `.env` files are gitignored.

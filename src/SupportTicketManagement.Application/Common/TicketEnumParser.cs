@@ -26,6 +26,23 @@ public static class TicketEnumParser
         return Enum.TryParse(value, ignoreCase: true, out status) && Enum.IsDefined(status);
     }
 
+    public static bool TryParseOptionalStatusFilter(string? value, out TicketStatus? status)
+    {
+        status = null;
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return true;
+        }
+
+        if (TryParseStatus(value, out var parsedStatus))
+        {
+            status = parsedStatus;
+            return true;
+        }
+
+        return false;
+    }
+
     public static TicketListQuery CreateListQuery(string? search, string? statusFilter)
     {
         TicketStatus? status = null;

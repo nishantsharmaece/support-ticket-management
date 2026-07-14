@@ -3,7 +3,6 @@ using SupportTicketManagement.Application.Comments;
 using SupportTicketManagement.Application.Common;
 using SupportTicketManagement.Application.Interfaces;
 using SupportTicketManagement.Application.Tickets;
-using SupportTicketManagement.Domain.Enums;
 
 namespace SupportTicketManagement.Web.Api;
 
@@ -42,16 +41,9 @@ public sealed class TicketsController : ControllerBase
         [FromQuery] string? status,
         CancellationToken cancellationToken)
     {
-        TicketStatus? statusFilter = null;
-        if (!string.IsNullOrWhiteSpace(status))
+        if (!TicketEnumParser.TryParseOptionalStatusFilter(status, out var statusFilter))
         {
-            if (!Enum.TryParse(status, ignoreCase: true, out TicketStatus parsedStatus) ||
-                !Enum.IsDefined(parsedStatus))
-            {
-                return ApiResults.BadRequest("Invalid status value.", "status");
-            }
-
-            statusFilter = parsedStatus;
+            return ApiResults.BadRequest("Invalid status value.", "status");
         }
 
         var result = await _ticketService.ListAsync(

@@ -5,7 +5,7 @@ namespace SupportTicketManagement.Application.Common;
 
 public static class StatusTransitionHelper
 {
-    public static IReadOnlyCollection<TicketStatus> GetAllowedTransitions(TicketStatus currentStatus)
+    private static IReadOnlyCollection<TicketStatus> GetAllowedTransitions(TicketStatus currentStatus)
     {
         return TicketStatusStateMachine.GetAllowedTransitions(currentStatus);
     }

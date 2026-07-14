@@ -314,12 +314,6 @@ public sealed class TicketsController : Controller
         return RedirectToAction(nameof(Details), new { id });
     }
 
-    [HttpGet]
-    public IActionResult Error()
-    {
-        return View();
-    }
-
     private IActionResult TicketNotFound()
     {
         Response.StatusCode = StatusCodes.Status404NotFound;

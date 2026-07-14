@@ -34,7 +34,7 @@ From the repository root:
 ```bash
 dotnet ef database update \
   --project src/SupportTicketManagement.Infrastructure/SupportTicketManagement.Infrastructure.csproj \
-  --startup-project src/SupportTicketManagement.Infrastructure/SupportTicketManagement.Infrastructure.csproj \
+  --startup-project src/SupportTicketManagement.Web/SupportTicketManagement.Web.csproj \
   --connection "Data Source=database/support-tickets.db"
 ```
 
