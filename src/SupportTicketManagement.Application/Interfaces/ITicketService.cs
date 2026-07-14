@@ -21,4 +21,9 @@ public interface ITicketService
         int id,
         UpdateTicketRequest request,
         CancellationToken cancellationToken = default);
+
+    Task<ServiceResult<TicketDetailDto>> ChangeStatusAsync(
+        int id,
+        ChangeTicketStatusRequest request,
+        CancellationToken cancellationToken = default);
 }

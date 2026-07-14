@@ -95,8 +95,29 @@ Use-case services are registered via `AddApplication()` and delegate to reposito
 
 | Service | Operations |
 |---------|------------|
-| `ITicketService` | Create, list (search/filter), get by id, update |
+| `ITicketService` | Create, list (search/filter), get by id, update, change status |
 | `ICommentService` | Add comment to ticket |
 | `IUserService` | List seeded users |
 
-Repository implementations live in Infrastructure and are registered via `AddInfrastructure()`. API and MVC controllers are not yet implemented.
+Repository implementations live in Infrastructure and are registered via `AddInfrastructure()`.
+
+## REST API
+
+Base URL when running locally: `http://localhost:5030` (see `launchSettings.json`).
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| POST | `/api/tickets` | Create ticket (status = Open) |
+| GET | `/api/tickets` | List tickets |
+| GET | `/api/tickets?search={keyword}` | Search by title/description |
+| GET | `/api/tickets?status={status}` | Filter by status |
+| GET | `/api/tickets/{id}` | Get ticket detail with comments |
+| PUT | `/api/tickets/{id}` | Update ticket fields (not status) |
+| PATCH | `/api/tickets/{id}/status` | Change ticket status (state machine) |
+| POST | `/api/tickets/{id}/comments` | Add comment |
+
+Enum values in JSON: `Low`, `Medium`, `High` (priority); `Open`, `InProgress`, `Resolved`, `Closed`, `Cancelled` (status).
+
+Error responses use the `ErrorResponse` shape (`title`, `status`, `errors[]`). Status codes: 400 validation, 404 not found, 409 invalid status transition, 500 unhandled error (no stack traces).
+
+MVC UI is not yet implemented.

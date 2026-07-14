@@ -3,6 +3,7 @@ using SupportTicketManagement.Application.Interfaces;
 using SupportTicketManagement.Application.Tickets;
 using SupportTicketManagement.Domain.Entities;
 using SupportTicketManagement.Domain.Enums;
+using SupportTicketManagement.Domain.Services;
 
 namespace SupportTicketManagement.Application.Tickets;
 
@@ -112,6 +113,39 @@ public sealed class TicketService : ITicketService
         ticket.Description = request.Description?.Trim() ?? string.Empty;
         ticket.Priority = request.Priority;
         ticket.AssignedToId = request.AssignedToId;
+        ticket.UpdatedAt = DateTime.UtcNow;
+
+        await _ticketRepository.UpdateAsync(ticket, cancellationToken);
+        await _ticketRepository.SaveChangesAsync(cancellationToken);
+
+        var updatedTicket = await _ticketRepository.GetByIdWithDetailsAsync(id, cancellationToken);
+        return ServiceResult<TicketDetailDto>.Success(TicketDtoMapper.ToDetail(updatedTicket!));
+    }
+
+    public async Task<ServiceResult<TicketDetailDto>> ChangeStatusAsync(
+        int id,
+        ChangeTicketStatusRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var ticket = await _ticketRepository.GetByIdAsync(id, cancellationToken);
+        if (ticket is null)
+        {
+            return ServiceResult<TicketDetailDto>.NotFound($"Ticket with id {id} not found.");
+        }
+
+        if (!Enum.IsDefined(request.Status))
+        {
+            return ServiceResult<TicketDetailDto>.ValidationFailure(
+                [new ValidationError("status", "Invalid status value.")]);
+        }
+
+        if (!TicketStatusStateMachine.CanTransition(ticket.Status, request.Status))
+        {
+            return ServiceResult<TicketDetailDto>.Conflict(
+                $"Cannot transition from {ticket.Status} to {request.Status}.");
+        }
+
+        ticket.Status = request.Status;
         ticket.UpdatedAt = DateTime.UtcNow;
 
         await _ticketRepository.UpdateAsync(ticket, cancellationToken);
