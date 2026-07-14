@@ -58,13 +58,16 @@ The web application listens on the URLs configured in `src/SupportTicketManageme
 
 ## Database
 
-SQLite connection string placeholder (configured in `appsettings.json`):
+SQLite is configured in `src/SupportTicketManagement.Web/appsettings.json`:
 
 ```
 Data Source=database/support-tickets.db
 ```
 
-Database creation, migrations, and seed data will be added in a later phase.
+On application startup, pending EF Core migrations are applied and seed data is inserted idempotently. See [database/setup-notes.md](database/setup-notes.md) for migration commands, schema summary, and seed data details.
+
+Migration source files: `src/SupportTicketManagement.Infrastructure/Persistence/Migrations/`  
+Mirrored SQL script: `database/schema-or-migrations/InitialCreate.sql`
 
 ## Test
 
