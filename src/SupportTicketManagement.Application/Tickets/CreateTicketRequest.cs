@@ -8,7 +8,7 @@ public sealed class CreateTicketRequest
 
     public string? Description { get; init; }
 
-    public Priority Priority { get; init; }
+    public Priority? Priority { get; init; }
 
     public int AssignedToId { get; init; }
 

@@ -46,7 +46,7 @@ public sealed class TicketService : ITicketService
         {
             Title = request.Title.Trim(),
             Description = request.Description?.Trim() ?? string.Empty,
-            Priority = request.Priority,
+            Priority = request.Priority!.Value,
             Status = TicketStatus.Open,
             AssignedToId = request.AssignedToId,
             CreatedById = request.CreatedById,
@@ -158,7 +158,7 @@ public sealed class TicketService : ITicketService
     private static List<ValidationError> ValidateTicketFields(
         string title,
         string? description,
-        Priority priority)
+        Priority? priority)
     {
         var errors = new List<ValidationError>();
 
@@ -176,7 +176,11 @@ public sealed class TicketService : ITicketService
             errors.Add(new ValidationError("description", $"Description must not exceed {DescriptionMaxLength} characters."));
         }
 
-        if (!Enum.IsDefined(priority))
+        if (!priority.HasValue)
+        {
+            errors.Add(new ValidationError("priority", "Priority is required."));
+        }
+        else if (!Enum.IsDefined(priority.Value))
         {
             errors.Add(new ValidationError("priority", "Invalid priority value."));
         }
