@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SupportTicketManagement.Application.Interfaces;
 using SupportTicketManagement.Infrastructure.Persistence;
+using SupportTicketManagement.Infrastructure.Repositories;
 using SupportTicketManagement.Infrastructure.Seeding;
 
 namespace SupportTicketManagement.Infrastructure;
@@ -18,6 +20,10 @@ public static class DependencyInjection
 
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite(connectionString));
+
+        services.AddScoped<ITicketRepository, TicketRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ICommentRepository, CommentRepository>();
 
         return services;
     }

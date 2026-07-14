@@ -79,9 +79,24 @@ dotnet test
 
 | Path | Purpose |
 |------|---------|
-| `src/` | Application source projects |
+| `src/SupportTicketManagement.Domain/` | Entities, enums, domain rules |
+| `src/SupportTicketManagement.Application/` | DTOs, service interfaces, use-case services |
+| `src/SupportTicketManagement.Infrastructure/` | EF Core persistence, repositories, seeding |
+| `src/SupportTicketManagement.Web/` | MVC UI, API controllers, DI composition root |
 | `tests/` | xUnit test projects |
 | `database/` | Database files and setup notes |
 | `docs/` | Project documentation |
 | `tool-specific/cursor-workflow/` | Cursor workflow artifacts |
 | `.cursor/rules/` | Cursor IDE rules |
+
+## Application Layer
+
+Use-case services are registered via `AddApplication()` and delegate to repository interfaces:
+
+| Service | Operations |
+|---------|------------|
+| `ITicketService` | Create, list (search/filter), get by id, update |
+| `ICommentService` | Add comment to ticket |
+| `IUserService` | List seeded users |
+
+Repository implementations live in Infrastructure and are registered via `AddInfrastructure()`. API and MVC controllers are not yet implemented.
