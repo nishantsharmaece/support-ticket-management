@@ -31,19 +31,29 @@ public sealed class ExceptionHandlingMiddleware
 
             context.Response.Clear();
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            context.Response.ContentType = "application/json";
 
-            var response = new ErrorResponseDto
+            if (context.Request.Path.StartsWithSegments("/api"))
             {
-                Title = "An error occurred",
-                Status = StatusCodes.Status500InternalServerError,
-                Errors =
-                [
-                    new ValidationError(string.Empty, "An unexpected error occurred.")
-                ]
-            };
+                context.Response.ContentType = "application/json";
 
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response, JsonSerializerOptions));
+                var response = new ErrorResponseDto
+                {
+                    Title = "An error occurred",
+                    Status = StatusCodes.Status500InternalServerError,
+                    Errors =
+                    [
+                        new ValidationError(string.Empty, "An unexpected error occurred.")
+                    ]
+                };
+
+                await context.Response.WriteAsync(JsonSerializer.Serialize(response, JsonSerializerOptions));
+                return;
+            }
+
+            context.Response.ContentType = "text/html; charset=utf-8";
+            await context.Response.WriteAsync(
+                "<html><body><h1>Something went wrong</h1><p>An unexpected error occurred. Please try again.</p>" +
+                "<a href=\"/Tickets\">Back to ticket list</a></body></html>");
         }
     }
 

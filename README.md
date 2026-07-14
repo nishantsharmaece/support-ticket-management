@@ -101,6 +101,19 @@ Use-case services are registered via `AddApplication()` and delegate to reposito
 
 Repository implementations live in Infrastructure and are registered via `AddInfrastructure()`.
 
+## MVC UI
+
+The default route is the ticket list (`/Tickets`). MVC controllers call Application services directly (no HTTP loopback).
+
+| Screen | Route |
+|--------|-------|
+| Ticket list (search/filter) | `/Tickets` |
+| Create ticket | `/Tickets/Create` |
+| Ticket details | `/Tickets/Details/{id}` |
+| Edit ticket | `/Tickets/Edit/{id}` |
+
+Ticket details includes status change (state machine) and add-comment forms. Bootstrap 5 is used for layout and styling.
+
 ## REST API
 
 Base URL when running locally: `http://localhost:5030` (see `launchSettings.json`).
@@ -119,5 +132,3 @@ Base URL when running locally: `http://localhost:5030` (see `launchSettings.json
 Enum values in JSON: `Low`, `Medium`, `High` (priority); `Open`, `InProgress`, `Resolved`, `Closed`, `Cancelled` (status).
 
 Error responses use the `ErrorResponse` shape (`title`, `status`, `errors[]`). Status codes: 400 validation, 404 not found, 409 invalid status transition, 500 unhandled error (no stack traces).
-
-MVC UI is not yet implemented.
