@@ -1,0 +1,129 @@
+@using SupportTicketManagement.Web.Helpers
+@model SupportTicketManagement.Web.ViewModels.TicketDetailsViewModel
+@{
+    ViewData["Title"] = Model.Ticket.Title;
+}
+
+<div class="d-flex justify-content-between align-items-start mb-4">
+    <div>
+        <h1 class="mb-2">@Model.Ticket.Title</h1>
+        <div class="d-flex gap-2">
+            <span class="badge @TicketDisplayHelper.StatusBadgeClass(Model.Ticket.Status)">
+                @TicketDisplayHelper.FormatStatus(Model.Ticket.Status)
+            </span>
+            <span class="badge @TicketDisplayHelper.PriorityBadgeClass(Model.Ticket.Priority)">
+                @Model.Ticket.Priority
+            </span>
+        </div>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Ticket.Id" class="btn btn-outline-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
+    </div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+{
+    <div class="alert alert-success">@Model.SuccessMessage</div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+
+<div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@Model.Ticket.Description</dd>
+            <dt class="col-sm-3">Assignee</dt>
+            <dd class="col-sm-9">@Model.Ticket.AssigneeName</dd>
+            <dt class="col-sm-3">Creator</dt>
+            <dd class="col-sm-9">@Model.Ticket.CreatorName</dd>
+            <dt class="col-sm-3">Created</dt>
+            <dd class="col-sm-9">@TicketDisplayHelper.FormatTimestamp(Model.Ticket.CreatedAt)</dd>
+            <dt class="col-sm-3">Updated</dt>
+            <dd class="col-sm-9">@TicketDisplayHelper.FormatTimestamp(Model.Ticket.UpdatedAt)</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2 class="h5 mb-0">Change Status</h2>
+    </div>
+    <div class="card-body">
+        @if (Model.StatusForm.IsTerminal)
+        {
+            <p class="text-muted mb-0">This ticket is in a terminal state and cannot be changed further.</p>
+        }
+        else
+        {
+            <form asp-action="ChangeStatus" asp-route-id="@Model.Ticket.Id" method="post" class="row g-3 align-items-end">
+                @Html.AntiForgeryToken()
+                <div class="col-md-6">
+                    <label asp-for="StatusForm.NewStatus" class="form-label">New Status</label>
+                    <select asp-for="StatusForm.NewStatus" asp-items="Model.StatusForm.AllowedStatusOptions" class="form-select">
+                        <option value="">-- Select status --</option>
+                    </select>
+                    <span asp-validation-for="StatusForm.NewStatus" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100">Update Status</button>
+                </div>
+            </form>
+        }
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2 class="h5 mb-0">Comments</h2>
+    </div>
+    <div class="card-body">
+        @if (Model.Ticket.Comments.Count == 0)
+        {
+            <p class="text-muted">No comments yet.</p>
+        }
+        else
+        {
+            <div class="list-group list-group-flush mb-3">
+                @foreach (var comment in Model.Ticket.Comments)
+                {
+                    <div class="list-group-item px-0">
+                        <div class="d-flex justify-content-between">
+                            <strong>@comment.AuthorName</strong>
+                            <small class="text-muted">@TicketDisplayHelper.FormatTimestamp(comment.CreatedAt)</small>
+                        </div>
+                        <p class="mb-0 mt-1">@comment.Message</p>
+                    </div>
+                }
+            </div>
+        }
+
+        <h3 class="h6">Add Comment</h3>
+        <form asp-action="AddComment" asp-route-id="@Model.Ticket.Id" method="post" novalidate>
+            @Html.AntiForgeryToken()
+            <div class="mb-3">
+                <label asp-for="CommentForm.Message" class="form-label"></label>
+                <textarea asp-for="CommentForm.Message" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="CommentForm.Message" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CommentForm.CreatedById" class="form-label"></label>
+                <select asp-for="CommentForm.CreatedById" asp-items="Model.CommentForm.UserOptions" class="form-select">
+                    <option value="">-- Select creator --</option>
+                </select>
+                <span asp-validation-for="CommentForm.CreatedById" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Comment</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
