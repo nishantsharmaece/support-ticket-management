@@ -1,0 +1,56 @@
+@model SupportTicketManagement.Web.ViewModels.TicketCreateViewModel
+@{
+    ViewData["Title"] = "Create Ticket";
+}
+
+<h1 class="mb-4">Create Ticket</h1>
+
+<form asp-action="Create" method="post" novalidate>
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Priority" class="form-label"></label>
+        <select asp-for="Priority" asp-items="Model.PriorityOptions" class="form-select">
+            <option value="">-- Select priority --</option>
+        </select>
+        <span asp-validation-for="Priority" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AssignedToId" class="form-label"></label>
+        <select asp-for="AssignedToId" asp-items="Model.UserOptions" class="form-select">
+            <option value="">-- Select assignee --</option>
+        </select>
+        <span asp-validation-for="AssignedToId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-4">
+        <label asp-for="CreatedById" class="form-label"></label>
+        <select asp-for="CreatedById" asp-items="Model.UserOptions" class="form-select">
+            <option value="">-- Select creator --</option>
+        </select>
+        <span asp-validation-for="CreatedById" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

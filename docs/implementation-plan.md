@@ -3,6 +3,8 @@
 **Scope:** Core only  
 **Traces to:** [architecture.md](architecture.md), [api-contract.md](api-contract.md), [ui-flow.md](ui-flow.md), [acceptance-criteria.md](acceptance-criteria.md)
 
+**Status:** Core phases 1–9 complete. Build and integration tests pass. See `tool-specific/cursor-workflow/test-results.md`.
+
 Phased delivery plan for the Core implementation (~5 focused hours of application work). Each phase produces a verifiable increment. Stretch features are deferred until all Core acceptance criteria pass.
 
 ---

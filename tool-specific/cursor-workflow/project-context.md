@@ -3,7 +3,7 @@
 Persistent project context for the Support Ticket Management System — Option 1 of the .NET AI Capability Assessment. This document is the primary source of truth for all planning, implementation, and AI collaboration in this repository.
 
 **Primary AI tool:** Cursor  
-**Current state:** Documentation and workflow artifacts in progress; application code not yet started.
+**Current state:** Core application implemented (MVC, API, persistence, state machine, search/filter, validation, integration tests). Lifecycle artifacts in progress.
 
 ---
 
@@ -220,7 +220,7 @@ tool-specific/
 | Artifact | Purpose |
 |----------|---------|
 | `project-context.md` | Persistent what-and-why context (this file) |
-| `spec.md` | Detailed functional and technical specification |
+| `spec.md` | Detailed functional and technical specification (content in `docs/api-contract.md`, `docs/ui-flow.md`, `docs/data-model.md`) |
 | `tasks.md` | Implementation task breakdown |
 | Root lifecycle markdown files | Requirement analysis, design, testing, reflection per assessment guide |
 | `ai-prompts/` | Grouped prompt history with iteration evidence |
@@ -235,7 +235,7 @@ Update related documents when design or behavior changes. Planning documents are
 
 | Tier | Scope | Status |
 |------|-------|--------|
-| Core (mandatory) | Integration tests for ticket status state machine — valid transitions succeed, invalid transitions rejected | Required |
+| Core (mandatory) | Integration tests for ticket status state machine — valid transitions succeed, invalid transitions rejected | **Complete** (22/22 passing; see `tool-specific/cursor-workflow/test-results.md`) |
 | Stretch (deferred) | Unit tests; edge-case and failure tests; broader coverage | Out of scope until Core complete |
 
 - Record test results in `test-results.md` (lifecycle artifact)
@@ -283,21 +283,21 @@ Update related documents when design or behavior changes. Planning documents are
 
 ### Core Acceptance Criteria
 
-- [ ] A user can create a ticket via the UI
-- [ ] A user can view all tickets from the database
-- [ ] A user can open a ticket detail view
-- [ ] A user can update ticket fields and reassign
-- [ ] A user can add comments
-- [ ] Status changes only through valid transitions; invalid ones are rejected
-- [ ] Keyword search and status filter work
-- [ ] Data remains available after restart
-- [ ] Backend validation prevents invalid records
-- [ ] No secrets committed to the repository
-- [ ] State-machine integration tests pass
+- [x] A user can create a ticket via the UI
+- [x] A user can view all tickets from the database
+- [x] A user can open a ticket detail view
+- [x] A user can update ticket fields and reassign
+- [x] A user can add comments
+- [x] Status changes only through valid transitions; invalid ones are rejected
+- [x] Keyword search and status filter work
+- [x] Data remains available after restart
+- [x] Backend validation prevents invalid records
+- [x] No secrets committed to the repository
+- [x] State-machine integration tests pass
 
 ### Submission Readiness
 
-- [ ] README setup instructions work on a clean machine
-- [ ] Lifecycle artifacts present (requirement analysis, design notes, test strategy, reflection, etc.)
-- [ ] Full prompt history captured in `ai-prompts/`
+- [x] README setup instructions work on a clean machine
+- [x] Lifecycle artifacts present (requirement analysis, design notes, test strategy, test results)
+- [ ] Full prompt history captured in `ai-prompts/` (planning prompts present; implementation/testing prompts to be added)
 - [ ] PR description and reflection completed

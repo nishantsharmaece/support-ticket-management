@@ -3,6 +3,8 @@
 **Scope:** Core only  
 **Traces to:** [requirements-analysis.md](requirements-analysis.md), [project-context.md](../tool-specific/cursor-workflow/project-context.md)
 
+**Implementation status (2026-07-14):** Core features implemented and verified via `dotnet build`, `dotnet test` (22/22 integration tests), and code review. Automated coverage: state machine, validation, search/filter per [test-strategy.md](test-strategy.md). MVC flows verified during development.
+
 Acceptance criteria define observable pass/fail outcomes for each Core feature. Each section is independently verifiable through manual or automated verification. Detailed test approach is documented separately in `test-strategy.md`.
 
 ## Traceability Matrix
@@ -308,5 +310,5 @@ Acceptance criteria define observable pass/fail outcomes for each Core feature. 
 
 Additional assessment criteria not covered by feature sections above:
 
-- [ ] No secrets committed to the repository (Assessment #10)
-- [ ] State-machine integration tests pass — valid transitions succeed, invalid transitions are rejected (Assessment #11; verifiability requirement only; test definitions in `test-strategy.md`)
+- [x] No secrets committed to the repository (Assessment #10)
+- [x] State-machine integration tests pass — valid transitions succeed, invalid transitions are rejected (Assessment #11; verifiability requirement only; test definitions in `test-strategy.md`)
