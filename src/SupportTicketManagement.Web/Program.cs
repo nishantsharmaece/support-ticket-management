@@ -1,8 +1,11 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SupportTicketManagement.Application;
 using SupportTicketManagement.Application.Common;
 using SupportTicketManagement.Infrastructure;
+using SupportTicketManagement.Infrastructure.Identity;
+using SupportTicketManagement.Infrastructure.Persistence;
 using SupportTicketManagement.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +39,21 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/Login";
+});
+
 var app = builder.Build();
 
 await app.Services.ApplyMigrationsAndSeedAsync();
@@ -52,6 +70,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

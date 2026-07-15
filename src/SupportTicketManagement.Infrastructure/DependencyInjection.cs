@@ -35,6 +35,7 @@ public static class DependencyInjection
 
         await context.Database.MigrateAsync();
         await DatabaseSeeder.SeedAsync(context);
+        await IdentitySeeder.SeedAsync(scope.ServiceProvider);
     }
 
     private static string ResolveSqliteConnectionString(IConfiguration configuration)

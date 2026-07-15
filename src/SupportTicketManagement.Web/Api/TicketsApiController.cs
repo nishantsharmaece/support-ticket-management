@@ -7,14 +7,14 @@ using SupportTicketManagement.Application.Tickets;
 namespace SupportTicketManagement.Web.Api;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/tickets")]
 [Produces("application/json")]
-public sealed class TicketsController : ControllerBase
+public sealed class TicketsApiController : ControllerBase
 {
     private readonly ITicketService _ticketService;
     private readonly ICommentService _commentService;
 
-    public TicketsController(ITicketService ticketService, ICommentService commentService)
+    public TicketsApiController(ITicketService ticketService, ICommentService commentService)
     {
         _ticketService = ticketService;
         _commentService = commentService;

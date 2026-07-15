@@ -48,6 +48,8 @@ docs/
 
 No additional configuration or secrets are required. The SQLite connection string in `appsettings.json` points to a local file under `database/`.
 
+For the Stretch authentication feature, a seeded admin account is created on first startup (see [Authentication](#authentication)).
+
 ## Run
 
 From the repository root:
@@ -64,7 +66,7 @@ The web application listens on the URLs configured in `src/SupportTicketManageme
 | https | `https://localhost:7199` |
 | IIS Express | `http://localhost:6040` |
 
-Open `/Tickets` in a browser for the ticket list UI.
+Open `/Tickets` in a browser for the ticket list UI. Unauthenticated users are redirected to `/Account/Login`.
 
 ## Database
 
@@ -123,10 +125,11 @@ Status transitions are enforced in the Application layer via `TicketStatusStateM
 
 ## MVC UI
 
-The default route is the ticket list (`/Tickets`). MVC controllers call Application services directly (no HTTP loopback).
+The default route is the ticket list (`/Tickets`). MVC controllers call Application services directly (no HTTP loopback). Ticket management pages require authentication (`[Authorize]`).
 
 | Screen | Route |
 |--------|-------|
+| Login | `/Account/Login` |
 | Ticket list (search/filter) | `/Tickets` |
 | Create ticket | `/Tickets/Create` |
 | Ticket details | `/Tickets/Details/{id}` |
@@ -164,6 +167,20 @@ Error responses use the `ErrorResponse` shape (`title`, `status`, `errors[]`). S
 | [docs/ui-flow.md](docs/ui-flow.md) | MVC screen flows |
 | [docs/test-strategy.md](docs/test-strategy.md) | Integration test approach |
 | [tool-specific/cursor-workflow/project-context.md](tool-specific/cursor-workflow/project-context.md) | Persistent project context |
+
+## Authentication
+
+Stretch feature: ASP.NET Core Identity with cookie authentication, using the same SQLite database as ticket data.
+
+| Item | Value |
+|------|-------|
+| Login URL | `/Account/Login` |
+| Seeded admin email | `admin@example.com` |
+| Seeded admin password | `Admin@123` |
+
+The admin user and `Admin` role are seeded idempotently on startup. Registration, password reset, email confirmation, and role management UI are not implemented. The REST API remains open (no `[Authorize]` on API controllers).
+
+Logout is available from the navigation bar when signed in.
 
 ## Security
 
