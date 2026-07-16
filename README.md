@@ -166,6 +166,7 @@ Error responses use the `ErrorResponse` shape (`title`, `status`, `errors[]`). S
 | [docs/api-contract.md](docs/api-contract.md) | REST API contract |
 | [docs/ui-flow.md](docs/ui-flow.md) | MVC screen flows |
 | [docs/test-strategy.md](docs/test-strategy.md) | Integration test approach |
+| [docs/reflection.md](docs/reflection.md) | Project reflection and lessons learned |
 | [tool-specific/cursor-workflow/project-context.md](tool-specific/cursor-workflow/project-context.md) | Persistent project context |
 
 ## Authentication
