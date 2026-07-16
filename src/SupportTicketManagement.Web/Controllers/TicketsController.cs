@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SupportTicketManagement.Application.Comments;
@@ -9,6 +10,7 @@ using SupportTicketManagement.Web.ViewModels;
 
 namespace SupportTicketManagement.Web.Controllers;
 
+[Authorize]
 public sealed class TicketsController : Controller
 {
     private readonly ITicketService _ticketService;

@@ -16,14 +16,14 @@ public sealed class UserRepository : IUserRepository
 
     public async Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await _context.Users
+        return await _context.TicketUsers
             .AsNoTracking()
             .FirstOrDefaultAsync(user => user.Id == id, cancellationToken);
     }
 
     public async Task<IReadOnlyList<User>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Users
+        return await _context.TicketUsers
             .AsNoTracking()
             .OrderBy(user => user.Name)
             .ToListAsync(cancellationToken);
@@ -31,6 +31,6 @@ public sealed class UserRepository : IUserRepository
 
     public Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)
     {
-        return _context.Users.AnyAsync(user => user.Id == id, cancellationToken);
+        return _context.TicketUsers.AnyAsync(user => user.Id == id, cancellationToken);
     }
 }

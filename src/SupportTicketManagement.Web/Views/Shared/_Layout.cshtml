@@ -4,6 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Support Ticket Management</title>
+    <script>
+        (function () {
+            var theme = localStorage.getItem('stm-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SupportTicketManagement.Web.styles.css" asp-append-version="true" />
@@ -13,6 +19,38 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-controller="Tickets" asp-action="Index">Support Ticket Management</a>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item me-2 d-flex align-items-center">
+                        <div class="form-check form-switch theme-switch mb-0">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   id="theme-toggle"
+                                   aria-label="Toggle dark theme" />
+                            <label class="form-check-label theme-switch-label" for="theme-toggle" title="Toggle theme">
+                                <span class="theme-switch-icon" aria-hidden="true"></span>
+                            </label>
+                        </div>
+                    </li>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <li class="nav-item d-flex align-items-center">
+                            <span class="navbar-text me-2">@User.Identity.Name</span>
+                        </li>
+                        <li class="nav-item">
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-link nav-link">Logout</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                        </li>
+                    }
+                </ul>
             </div>
         </nav>
     </header>

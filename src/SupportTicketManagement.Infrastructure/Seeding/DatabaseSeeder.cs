@@ -9,7 +9,7 @@ public static class DatabaseSeeder
 {
     public static async Task SeedAsync(AppDbContext context, CancellationToken cancellationToken = default)
     {
-        if (await context.Users.AnyAsync(cancellationToken))
+        if (await context.TicketUsers.AnyAsync(cancellationToken))
         {
             return;
         }
@@ -23,7 +23,7 @@ public static class DatabaseSeeder
             new User { Name = "Carol Manager", Email = "carol@example.com", Role = "Manager" }
         };
 
-        context.Users.AddRange(users);
+        context.TicketUsers.AddRange(users);
         await context.SaveChangesAsync(cancellationToken);
 
         if (await context.Tickets.AnyAsync(cancellationToken))

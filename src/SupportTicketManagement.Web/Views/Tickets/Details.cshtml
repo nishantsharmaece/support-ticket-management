@@ -62,7 +62,7 @@
         }
         else
         {
-            <form asp-action="ChangeStatus" asp-route-id="@Model.Ticket.Id" method="post" class="row g-3 align-items-end">
+            <form asp-controller="Tickets" asp-action="ChangeStatus" asp-route-id="@Model.Ticket.Id" method="post" class="row g-3 align-items-end">
                 @Html.AntiForgeryToken()
                 <div class="col-md-6">
                     <label asp-for="StatusForm.NewStatus" class="form-label">New Status</label>
@@ -105,7 +105,7 @@
         }
 
         <h3 class="h6">Add Comment</h3>
-        <form asp-action="AddComment" asp-route-id="@Model.Ticket.Id" method="post" novalidate>
+        <form asp-controller="Tickets" asp-action="AddComment" asp-route-id="@Model.Ticket.Id" method="post" novalidate>
             @Html.AntiForgeryToken()
             <div class="mb-3">
                 <label asp-for="CommentForm.Message" class="form-label"></label>
