@@ -1,7 +1,7 @@
-# Pull Request Description
+# PR Description
 
 Part C — Submission artifact for the .NET AI Capability Assessment.  
-Describes the Support Ticket Management delivery (Core + Stretch) for review and submission packaging.
+Describes the Support Ticket Management delivery (Core + Stretch) for review and submission packaging. Section structure follows the Participant Guide "PR Description" template.
 
 **Traces to:** [`README.md`](README.md), [`acceptance-criteria.md`](acceptance-criteria.md), [`design-notes.md`](design-notes.md), [`test-results.md`](test-results.md), [`reflection.md`](reflection.md), [`final-ai-usage-summary.md`](final-ai-usage-summary.md)
 
@@ -66,13 +66,14 @@ Key engineering decisions: MVC chosen over Razor Pages for clear controller/view
 
 | Check | Result |
 |-------|--------|
-| `dotnet build` | Pass (0 errors) |
-| `dotnet test` | **22/22** passed |
+| `dotnet build` | Pass (0 warnings, 0 errors) |
+| `dotnet test` | **22/22** passed (duration ~0.5s) |
 | State machine integration | 5 valid + 5 invalid transition cases |
 | Validation integration | Missing/empty fields, not-found, invalid enum |
 | Search/filter integration | Keyword, status, combined, empty, invalid status query |
 | Manual MVC | Create/list/detail/update/comments/search/filter/status |
 | Manual Stretch | Unauthenticated `/Tickets` → login redirect; theme contrast in dark mode |
+| Runtime smoke check | App listens on `http://localhost:5030`; `GET /api/tickets` → 200; `GET /Tickets` → 302 (login redirect) |
 
 Details: [`test-results.md`](test-results.md), [`tool-specific/cursor-workflow/test-results.md`](tool-specific/cursor-workflow/test-results.md), [`debugging-notes.md`](debugging-notes.md).
 
@@ -83,6 +84,23 @@ Details: [`test-results.md`](test-results.md), [`tool-specific/cursor-workflow/t
 Cursor (Plan Mode for design; Agent Mode for scoped implementation) assisted across requirements, architecture, API/UI contracts, phased coding, tests, debugging, and review. Human ownership covered stack choice, phase boundaries, acceptance of/rejection of AI suggestions, and verification. Full lifecycle summary: [`final-ai-usage-summary.md`](final-ai-usage-summary.md). Prompt exports live under `ai-prompts/`.
 
 Notable accepted AI help: scaffolding, planning docs, test isolation fix, nullable priority validation, Identity/`TicketUsers` separation, dark-theme CSS. Notable rejections: silent priority default, out-of-scope review ideas (audit trail, FluentResults, interceptor-based rules), premature Stretch/Swagger expansion.
+
+---
+
+## Branch & PR Delivery
+
+Work was delivered through feature branches merged via pull requests into `dev`, then `dev` into `main`, keeping commit history organized and traceable.
+
+| PR | Branch | Into | Purpose | Status |
+|----|--------|------|---------|--------|
+| #1 | `feature/project-setup` | `dev` | Solution scaffold, layering, tooling | Merged |
+| #2 | `feature/core-implementation` | `dev` | Core: API, MVC, persistence, tests | Merged |
+| #4 | `feature/stretch-features` | `dev` | Stretch: Identity auth, light/dark theme | Merged |
+| #6 | `feature/bug-fix` | `dev` | Remove duplicate API controller (route ambiguity) | Merged |
+| #3, #5, #7 | `dev` | `main` | Promotion of accumulated work | Merged |
+| #8 | `feature/missing-docs` | `dev` | Align repo to Participant Guide required root structure (docs only) | Open |
+
+PR #8 addresses the earlier structure-gate gap by adding the mandated root ownership/lifecycle documents and supporting `ai-prompts/`, `database/seed-data/`, and `tool-specific/cursor-workflow/` artifacts, with no application code changes.
 
 ---
 
@@ -106,7 +124,6 @@ Screenshots are not committed in this documentation-only ownership pass. For a l
 - No user-management UI (assignees are seeded; Stretch admin is seeded only)
 - No pagination; search is case-insensitive `Contains` suitable for SQLite/Core scale
 - No Domain unit tests for the state machine (coverage is integration-level)
-- Stretch branch workflow may not yet match Core’s formal PR review path
 - Theme toggle is client-persisted only (`localStorage`)
 
 ---
@@ -117,4 +134,3 @@ Screenshots are not committed in this documentation-only ownership pass. For a l
 - Isolated unit tests for `TicketStatusStateMachine`
 - CI pipeline; pagination and additional Stretch items from `project-context.md`
 - Defensive `TryGetValue` in the state machine for future enum additions
-- Formal PR merge for Stretch features with the same review discipline as Core
