@@ -42,15 +42,26 @@ Requires the [dotnet-ef](https://learn.microsoft.com/en-us/ef/core/cli/dotnet) g
 
 ## Seed Data
 
-Seed data runs idempotently after migrations on application startup. If users already exist, seeding is skipped.
+**Human-readable mirror:** [`database/seed-data/`](seed-data/) (markdown/JSON for assessment; not loaded at runtime).
+
+Seed data runs idempotently after migrations on application startup (`ApplyMigrationsAndSeedAsync`). Domain seeding is skipped if any user already exists. Identity seeding is skipped if the admin user already exists.
 
 | Data | Count | Notes |
 |------|-------|-------|
 | Users | 5 | Jane Agent, John Manager, Alice Agent, Bob Agent, Carol Manager |
 | Tickets | 3 | Mixed statuses (Open, InProgress, Resolved) for demo and search |
 | Comments | 2 | Sample comments on first two tickets |
+| Identity (stretch) | 1 role + 1 user | `Admin` role; demo login documented in [`seed-data/identity-accounts.md`](seed-data/identity-accounts.md) |
 
-No credentials or secrets are included in seed data.
+Ticket users have no passwords. The Identity admin password is a **local demo value only** (same as README); no production secrets are stored here.
+
+### Verify after restart
+
+1. From the repository root, start the app: `dotnet run --project src/SupportTicketManagement.Web`
+2. Confirm SQLite file exists at `database/support-tickets.db`
+3. Open the UI or API and confirm five assignee users and three sample tickets (with comments on the first two)
+4. (Stretch) Sign in at `/Account/Login` with the demo admin from `seed-data/identity-accounts.md`
+5. Stop and start again — data should persist; seeders should not duplicate rows
 
 ## Schema Summary
 
