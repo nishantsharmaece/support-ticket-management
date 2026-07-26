@@ -1,7 +1,7 @@
 # Implementation Tasks
 
 **Scope:** Core only  
-**Traces to:** [implementation-plan.md](../../docs/implementation-plan.md), [project-context.md](project-context.md)
+**Traces to:** [implementation-plan.md](../../docs/implementation-plan.md), [project-context.md](project-context.md), [spec.md](spec.md), [cursor-rules-or-instructions.md](cursor-rules-or-instructions.md), root [acceptance-criteria.md](../../acceptance-criteria.md)
 
 Execution roadmap and checklist for Core implementation. Complete tasks in order within each phase; respect dependencies across phases. Stretch features are out of scope until all Core acceptance criteria pass.
 

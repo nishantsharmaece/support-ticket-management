@@ -3,7 +3,7 @@
 Persistent project context for the Support Ticket Management System — Option 1 of the .NET AI Capability Assessment. This document is the primary source of truth for all planning, implementation, and AI collaboration in this repository.
 
 **Primary AI tool:** Cursor  
-**Current state:** Core application implemented (MVC, API, persistence, state machine, search/filter, validation, integration tests). Lifecycle artifacts in progress.
+**Current state:** Core application implemented (MVC, API, persistence, state machine, search/filter, validation, integration tests). Structure-gate remediation complete — root Part C lifecycle files, `ai-prompts/` seven-file index, `database/seed-data/`, and Cursor workflow artifacts (`spec.md`, `cursor-rules-or-instructions.md`) are in place.
 
 ---
 
@@ -160,7 +160,7 @@ flowchart TB
 - Domain has no framework dependencies
 - State machine rules enforced in Application or Domain — not in Razor views
 - MVC and API both delegate to Application services
-- Detailed layering and conventions: see `.cursor/rules/project-rules.md`
+- Detailed layering and conventions: see `.cursor/rules/project-rules.md` and [cursor-rules-or-instructions.md](cursor-rules-or-instructions.md)
 
 ---
 
@@ -183,15 +183,18 @@ flowchart TB
 Assessment-required layout mapped to this repository:
 
 ```
-support-ticket-management/
+ai-practical-assessment/
 README.md
-docs/
+candidate-info.md
+tool-workflow.md
+… (Part C root lifecycle files)
 src/
 tests/
 database/
 ai-prompts/
-tool-specific/
+tool-specific/cursor-workflow/
 .cursor/
+docs/   # secondary copies; guide-required ownership files live at repo root
 ```
 
 ---
@@ -220,12 +223,13 @@ tool-specific/
 | Artifact | Purpose |
 |----------|---------|
 | `project-context.md` | Persistent what-and-why context (this file) |
-| `spec.md` | Detailed functional and technical specification (content in `docs/api-contract.md`, `docs/ui-flow.md`, `docs/data-model.md`) |
+| `spec.md` | Functional/technical spec summary; points to root/`docs` api-contract, data-model, ui-flow, acceptance-criteria |
 | `tasks.md` | Implementation task breakdown |
-| Root lifecycle markdown files | Requirement analysis, design, testing, reflection per assessment guide |
+| `cursor-rules-or-instructions.md` | Documented Cursor rules (mirrors `.cursor/rules/project-rules.md`) |
+| Root lifecycle markdown files | Requirement analysis, design, API/UI/data contracts, testing, reflection per assessment guide |
 | `ai-prompts/` | Grouped prompt history with iteration evidence |
 | `README.md` | Setup, run, and test instructions |
-| `.cursor/rules/project-rules.md` | Coding conventions and AI guardrails |
+| `.cursor/rules/project-rules.md` | Live always-applied coding conventions and AI guardrails |
 
 Update related documents when design or behavior changes. Planning documents are created as part of the assessment workflow, not ad hoc.
 
@@ -248,7 +252,7 @@ Update related documents when design or behavior changes. Planning documents are
 
 1. **Load context first** — `project-context.md` is the primary context for every AI session
 2. **Scope from approved artifacts** — reference `spec.md` and `tasks.md` for implementation boundaries
-3. **Follow project rules** — conventions in `.cursor/rules/project-rules.md`
+3. **Follow project rules** — conventions in `.cursor/rules/project-rules.md` (documented in `cursor-rules-or-instructions.md`)
 4. **Plan before building** — use plan mode for significant implementation work
 5. **Log prompt history** — capture prompts in `ai-prompts/` grouped by activity (planning, design, implementation, testing, debugging, code review, documentation)
 6. **Validate and own output** — document what was accepted, changed, or rejected and why
@@ -298,6 +302,8 @@ Update related documents when design or behavior changes. Planning documents are
 ### Submission Readiness
 
 - [x] README setup instructions work on a clean machine
-- [x] Lifecycle artifacts present (requirement analysis, design notes, test strategy, test results)
-- [ ] Full prompt history captured in `ai-prompts/` (planning prompts present; implementation/testing prompts to be added)
-- [ ] PR description and reflection completed
+- [x] Lifecycle artifacts present at required root filenames (requirements, design, tests, debugging, review, reflection, PR description, final AI usage summary)
+- [x] Full prompt history under `ai-prompts/` (seven flat index files + activity subfolder exports, including structure-gate remediation chats 01–11)
+- [x] PR description and reflection completed (`pr-description.md`, `reflection.md`)
+- [x] Cursor tool-specific folder complete (`project-context.md`, `spec.md`, `tasks.md`, `cursor-rules-or-instructions.md`)
+- [x] `database/seed-data/` documented alongside schema/migrations and setup notes
